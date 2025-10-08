@@ -1,9 +1,13 @@
 #pragma once
 #include "Node.h"
-
+#include "headerNode.h"
 class SparseMatrix {
     private:
-        Node* start;
+        Header* rowHead;
+        Header* colHead;
+        int totalRows, totalCol;
+        headerNode* findCreateCol(yPos);
+        headerNode* findCreateRow(xPos);
     public:
         SparseMatrix();
         void add(int value, int xPos, int yPos);
