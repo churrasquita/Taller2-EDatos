@@ -1,8 +1,9 @@
+#include "Node.h"
 class headerNode{
     public:
         int index;
         Node* head;
         headerNode* next;
-        headerNode();
+        headerNode(int index);
         ~headerNode();
 };

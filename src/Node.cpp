@@ -1,4 +1,4 @@
-#include "Nodo.h"
+#include "Node.h"
 
 Node:: Node(int row, int col, int data){
     this-> row = row;
@@ -7,3 +7,4 @@ Node:: Node(int row, int col, int data){
     this-> right = nullptr;
     this-> down = nullptr;
 }
+Node:: ~Node(){}

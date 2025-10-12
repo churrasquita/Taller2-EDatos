@@ -5,3 +5,4 @@ headerNode:: headerNode(int index){
     this-> head = nullptr;
     this-> next = nullptr;
 }
+headerNode:: ~headerNode(){}
