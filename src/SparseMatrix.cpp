@@ -6,46 +6,104 @@ SparseMatrix:: SparseMatrix(){
     colHead = nullptr;
 }
 
-headerNode* SparseMatrix:: findCreateRow(int xPos){
-    if (!rowHead || xPos < rowHead->index) {
-        headerNode* newHead = new headerNode(xPos);
+headerNode* SparseMatrix:: findRow(xPos){
+    headerNode* aux = rowHead;
+    while(aux && aux->index != xPos){
+        aux = aux->next;
+    }
+    return aux; 
+}
+
+headerNode* SparseMatrix:: findCol(yPos){
+    headerNode* aux = colHead;
+    while(aux && aux->index != yPos){
+        aux = aux->next;
+    }
+    return aux; 
+}
+
+// por implementar 
+void SparseMatrix :: remove(int xPos, int yPos){
+    if(!rowHead || !colHead) return; 
+
+    headerNode* rowAux = rowHead; 
+    while(rowAux && rowAux ->index != xPos){
+        rowAux = rowAux->next;
+    }
+    if (!rowAux) return; 
+
+}
+
+
+int SparseMatrix:: get(int xPos, int yPos){
+    headerNode* row = findRow(xPos); 
+    if(!row) return 0;
+
+    Node* current = row -> rowNext;
+    while(current && current->y < yPos){
+        current = current -> right;
+    }
+    if(current && current ->y == yPos){
+        return current->data; 
+    }
+    return 0;
+}
+
+headerNode* SparseMatrix:: createRow(int xPos){
+    if (!rowHead) {
+        rowHead = new headerNode(xPos);
+        return rowHead;
+    }
+    headerNode* aux = rowHead;
+    headerNode* prev = nullptr;
+
+    while (aux && aux->index < xPos) {
+        prev = aux;
+        aux = aux->next;
+    }
+    if (aux && aux->index == xPos)
+        return aux;
+
+    headerNode* newHead = new headerNode(xPos);
+    if (!prev) {
         newHead->next = rowHead;
         rowHead = newHead;
-        return newHead;
+    } else {
+        newHead->next = aux;
+        prev->next = newHead;
     }
-        headerNode* aux = rowHead;
-        while (aux->next && aux->next->index < xPos)
-            aux = aux->next;
-        if (aux->next && aux->next->index == xPos)
-            return aux->next;
-        headerNode* newHead = new headerNode(xPos);
-        newHead->next = aux->next;
-        aux->next = newHead;
-        return newHead;
+    return newHead;
 }
-headerNode* SparseMatrix:: findCreateCol(int yPos){
-    if (!colHead || yPos < colHead->index) {
-        headerNode* newHead = new headerNode(yPos);
-        newHead->next = colHead;
-        colHead = newHead;
-        return newHead;
+headerNode* SparseMatrix:: createCol(int yPos){
+    if (!colHead){
+        colHead= new headerNode(yPos);
+        return colHead;
     }
         headerNode* aux = colHead;
-        while (aux->next && aux->next->index < yPos)
+        headerNode* prev = nullptr; 
+        while (aux && aux->index< yPos){
+            prev = aux; 
             aux = aux->next;
-        if (aux->next && aux->next->index == yPos)
-            return aux->next;
+        }
+        if (aux && aux->index == yPos){
+            return aux; 
+        }
         headerNode* newHead = new headerNode(yPos);
-        newHead->next = aux->next;
-        aux->next = newHead;
+        if(!prev){
+            newHead->next= colHead;
+            colHead = newHead;
+        } else{
+            newHead->next = aux;
+            prev->next = newHead;
+        }
         return newHead;
 }
 
 void SparseMatrix:: add(int value, int xPos, int yPos){
     if(value == 0) return;
 
-    headerNode* rowHead = findCreateRow(xPos);
-    headerNode* colHead = findCreateCol(yPos);
+    headerNode* rowHead = createRow(xPos);
+    headerNode* colHead = createCol(yPos);
     Node* newNode = new Node(xPos, yPos, value);
 
     if(!rowHead->head || !rowHead->head->col>yPos){
@@ -92,4 +150,23 @@ void SparseMatrix:: printStoredValues(){
         }
         rowAux = rowAux-> next;
     }
+}
+
+int SparseMatrix::density(){
+    int count = 0;
+    int maxRow = 0, maxCol = 0;
+    headerNode* aux = rowHead;
+    while(aux){
+        Node* current = aux->next;
+        while(current){
+            count ++;
+            if(curr->row>maxRow) maxRow = current->row;
+            if(curre->col>maxCol) maxCol = current ->col;
+            current = current->right;
+        }
+        aux = aux->next;
+    }
+    if (maxRow == 0 || maxCol == 0) return 0;
+    int total = (maxRow + 1) * (maxCol + 1);
+    return count / total;
 }

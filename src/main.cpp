@@ -7,7 +7,7 @@ int main() {
     s.add(0, 2, 5);
     s.add(2, 1, 8);
     s.add(3, 3, 9);
-    s.add(2, 1, 7); // reemplaza valor anterior
+    s.add(2, 1, 7); 
     s.printStoredValues();
     return 0;
 }
