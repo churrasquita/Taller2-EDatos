@@ -6,7 +6,7 @@ SparseMatrix:: SparseMatrix(){
     colHead = nullptr;
 }
 
-headerNode* SparseMatrix:: findRow(xPos){
+headerNode* SparseMatrix:: findRow(int xPos){
     headerNode* aux = rowHead;
     while(aux && aux->index != xPos){
         aux = aux->next;
@@ -14,7 +14,7 @@ headerNode* SparseMatrix:: findRow(xPos){
     return aux; 
 }
 
-headerNode* SparseMatrix:: findCol(yPos){
+headerNode* SparseMatrix:: findCol(int yPos){
     headerNode* aux = colHead;
     while(aux && aux->index != yPos){
         aux = aux->next;
@@ -22,7 +22,6 @@ headerNode* SparseMatrix:: findCol(yPos){
     return aux; 
 }
 
-// por implementar 
 void SparseMatrix :: remove(int xPos, int yPos){
     if(!rowHead || !colHead) return; 
 
@@ -32,6 +31,39 @@ void SparseMatrix :: remove(int xPos, int yPos){
     }
     if (!rowAux) return; 
 
+    Node* curr = rowAux->head;
+    Node* prev = nullptr;
+    while(curr && curr->col != yPos){
+        prev = curr;
+        curr = curr->right; 
+    }
+    if(!curr) return;
+
+    if(prev){
+        prev->right = curr->right;
+    } else{
+        rowAux->head = curr->right;
+    }
+    headerNode* colAux = colHead;
+    while(colAux && colAux->index != yPos){
+        colAux = colAux->next;
+    }
+    if(colAux){
+        Node* currCol = colAux->head; 
+        Node* prevCol = nullptr;
+        while(currCol && currCol->row!= xPos){
+            prevCol = currCol;
+            currCol= currCol->down;
+        }
+        if(currCol){
+            if(prevCol){
+                prevCol->down = currCol->down;
+            }else{
+                colAux-> head = currCol->down;
+            }
+        }
+    }
+    delete curr; 
 }
 
 
@@ -39,11 +71,11 @@ int SparseMatrix:: get(int xPos, int yPos){
     headerNode* row = findRow(xPos); 
     if(!row) return 0;
 
-    Node* current = row -> rowNext;
-    while(current && current->y < yPos){
+    Node* current = row -> head;
+    while(current && current->col < yPos){
         current = current -> right;
     }
-    if(current && current ->y == yPos){
+    if(current && current ->col == yPos){
         return current->data; 
     }
     return 0;
@@ -157,11 +189,11 @@ int SparseMatrix::density(){
     int maxRow = 0, maxCol = 0;
     headerNode* aux = rowHead;
     while(aux){
-        Node* current = aux->next;
+        Node* current = aux->head;
         while(current){
             count ++;
-            if(curr->row>maxRow) maxRow = current->row;
-            if(curre->col>maxCol) maxCol = current ->col;
+            if(current->row>maxRow) maxRow = current->row;
+            if(current->col>maxCol) maxCol = current ->col;
             current = current->right;
         }
         aux = aux->next;
@@ -170,3 +202,30 @@ int SparseMatrix::density(){
     int total = (maxRow + 1) * (maxCol + 1);
     return count / total;
 }
+
+ SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){
+    SparseMatrix* newMatrix = new SparseMatrix();
+
+    headerNode* rowAux = this->rowHead;
+    while(rowAux){
+        Node* nodeAux = rowAux->head;
+        while (nodeAux) {
+            headerNode* colSecond = second->findCol(nodeAux->row);
+            if(colSecond) {
+                Node* nodeSecond = colSecond->head;
+                while(nodeSecond) {
+                    int xPos = nodeAux->row;
+                    int yPos = nodeSecond->col;
+                    int value = nodeAux->data*nodeSecond->data;
+                    int prev = newMatrix->get(xPos, yPos);
+                    newMatrix->add(prev+value, xPos, yPos);
+                    nodeSecond = nodeSecond->down;
+                }
+            }
+            nodeAux = nodeAux->right;
+        }
+        rowAux = rowAux->next;
+    }
+    return newMatrix; 
+    
+ }

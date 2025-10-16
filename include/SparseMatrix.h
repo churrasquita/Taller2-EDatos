@@ -2,14 +2,14 @@
 #include "headerNode.h"
 
 class SparseMatrix {
+    
     private:
         headerNode* rowHead;
         headerNode* colHead;
-        int totalRows, totalCol;
         headerNode* createCol(int yPos);
         headerNode* createRow(int xPos);
-        headerNode* fincRow(int xPos);
-        headerNode* findRow(int yPos);
+        headerNode* findRow(int xPos);
+        headerNode* findCol(int yPos);
     public:
         SparseMatrix();
         void add(int value, int xPos, int yPos);
