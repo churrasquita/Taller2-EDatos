@@ -232,4 +232,4 @@ int SparseMatrix::density(){
     }
     return newMatrix; 
     
- }
+}
