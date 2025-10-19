@@ -2,8 +2,9 @@
 #include <iostream>
 using namespace std;
 
-SparseMatrix* sMatrix = new SparseMatrix ();
-SparseMatrix* currentMx = sMatrix;
+NodeMatrix* head = nullptr;
+SparseMatrix* currentMx = nullptr;
+int mxCount = 0;
 
 void addValue(){
     cout<<"Let's add values to SparseMatrix!"<<endl;
@@ -101,9 +102,28 @@ void getDensity(){
     else cout<<"The density of the current SparseMatrix: "<<density<< "%"<<endl;
 }
 
+void createMatrix(){
+    SparseMatrix* newMatrix = new SparseMatrix();
+    countMx++;
+    NodeMatrix* newNode= new NodxMatrix(newMatrix, countMx);
+
+    if (head == nullptr) {
+        head = newNode;
+    } else {
+        NodeMatrix* aux = head;
+        while (aux->next != nullptr)
+            aux = aux->next;
+        aux->next = newNode;
+    }
+    currentMx = newNode;
+}
+
 int main() {
     cout<<"Welcome!!"<<endl;
     cout<<"We're gonna try the Sparse Matrix program!"<<endl;
+
+    void createMatrix();
+    
     string op = " "; 
 
     while(op!="7"){
