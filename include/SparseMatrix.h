@@ -10,6 +10,7 @@ class SparseMatrix {
         headerNode* createRow(int xPos);
         headerNode* findRow(int xPos);
         headerNode* findCol(int yPos);
+        
     public:
         SparseMatrix();
         void add(int value, int xPos, int yPos);

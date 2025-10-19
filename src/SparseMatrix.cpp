@@ -23,22 +23,28 @@ headerNode* SparseMatrix:: findCol(int yPos){
 }
 
 void SparseMatrix :: remove(int xPos, int yPos){
-    if(!rowHead || !colHead) return; 
-
+    if(!rowHead || !colHead){
+        std:: cout<<"The SparseMatrix is empty"<< std:: endl;
+        return; 
+    }
     headerNode* rowAux = rowHead; 
     while(rowAux && rowAux ->index != xPos){
         rowAux = rowAux->next;
     }
-    if (!rowAux) return; 
-
+    if (!rowAux){
+        std:: cout<<"Invalid coordinates."<< std:: endl;
+        return; 
+    }
     Node* curr = rowAux->head;
     Node* prev = nullptr;
     while(curr && curr->col != yPos){
         prev = curr;
         curr = curr->right; 
     }
-    if(!curr) return;
-
+    if(!curr){
+        std:: cout<<"Invalid coordinates."<< std:: endl;
+        return;
+    }
     if(prev){
         prev->right = curr->right;
     } else{
@@ -63,9 +69,9 @@ void SparseMatrix :: remove(int xPos, int yPos){
             }
         }
     }
+    std:: cout<<"Node successfully removed."<< std:: endl;
     delete curr; 
 }
-
 
 int SparseMatrix:: get(int xPos, int yPos){
     headerNode* row = findRow(xPos); 
@@ -132,8 +138,6 @@ headerNode* SparseMatrix:: createCol(int yPos){
 }
 
 void SparseMatrix:: add(int value, int xPos, int yPos){
-    if(value == 0) return;
-
     headerNode* rowHead = createRow(xPos);
     headerNode* colHead = createCol(yPos);
     Node* newNode = new Node(xPos, yPos, value);

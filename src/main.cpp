@@ -3,22 +3,102 @@
 using namespace std;
 
 SparseMatrix* sMatrix = new SparseMatrix ();
+SparseMatrix* currentMx = sMatrix;
 
-void addValue(){ // por implementar
+void addValue(){
+    cout<<"Let's add values to SparseMatrix!"<<endl;
+    cout<<"- Value (integer > 0): "<<endl;
+    int value; cin>>value;
+    while(value<=0){
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- Value (integer > 0): "<<endl;
+        cin>>value;
+    }
+    cout<<"- xPos: "<<endl;
+    cout<<"> ";
+    int xPos;cin>>xPos;
+
+    while(xPos<0){
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- xPos (integer > -1): "<<endl;
+        cin>>xPos;
+    }
+    cout<<"- yPos: "<<endl;
+    cout<<"> ";
+    int yPos;cin>>yPos;
+
+    while(yPos<0){
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- yPos (integer > -1): "<<endl;
+        cin>>yPos;
+    }
+    sMatrix->add(value, xPos, yPos); 
     
-
 }
 
 void getValue(){
-    //por implementar
+    cout << "Let's find the value!" << endl;
+    cout << "Enter the X-Pos:" << endl;
+    cout << "> ";
+    int xPos; cin >> xPos;
+
+    while (xPos <=0) {
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- xPos (integer > -1): "<<endl;
+        cin>>xPos;
+    }
+
+    cout<<"- yPos: "<<endl;
+    cout<<"> ";
+    int yPos;cin>>yPos;
+
+    while(yPos<0){
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- yPos (integer > -1): "<<endl;
+        cin>>yPos;
+    }
+    int value = currentMx->get(xPos,yPos);
+    if(value == 0){
+        cout<<"The coordinates doesn't exist!"<<endl;
+    }
+    else cout<<"("<<xPos<<","<<yPos<<"): "<<currentMx->get(xPos,yPos)<<endl;
+
 }
 
 void removeValue(){
-    //por implementar
+    cout << "Let's remove the value!" << endl;
+    cout << "Enter the X-Pos:" << endl;
+    cout << "> ";
+    int xPos; cin >> xPos;
+
+    while (xPos <=0) {
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- xPos (integer > -1): "<<endl;
+        cin>>xPos;
+    }
+
+    cout<<"- yPos: "<<endl;
+    cout<<"> ";
+    int yPos;cin>>yPos;
+
+    while(yPos<0){
+        cout<<"Invalid value! Try again: "<<endl;
+        cout<<"- yPos (integer > -1): "<<endl;
+        cin>>yPos;
+    }
+    currentMx->remove(xPos,yPos);
 }
 
 void multiplyMx(){
     //por implementar
+}
+
+void getDensity(){
+    int density = currentMx->density();
+    if(density==0){
+        cout<<"The SparseMatrix is empty!"<<endl;
+    }
+    else cout<<"The density of the current SparseMatrix: "<<density<< "%"<<endl;
 }
 
 int main() {
@@ -42,7 +122,7 @@ int main() {
         else if(op=="2") getValue();
         else if(op == "3") removeValue();
         else if(op == "4") sMatrix->printStoredValues();
-        else if(op == "5") sMatrix->density();
+        else if(op == "5") getDensity();
         else if(op == "6") multiplyMx();
         else if(op == "7"){
             cout<<"See u later!"<<endl;
