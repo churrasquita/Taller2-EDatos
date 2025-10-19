@@ -7,4 +7,6 @@ EJECUTABLE: .\sistema
 
 Autor:
 Catalina Galleguillos C. 
+
+
 <img align="rigth" width="200px" alt="gif" src="https://media1.tenor.com/m/bCfpwMjfAi0AAAAC/cat-typing.gif">
