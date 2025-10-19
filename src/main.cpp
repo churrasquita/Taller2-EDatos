@@ -39,6 +39,7 @@ void addValue(){
         cin>>yPos;
     }
     currentMx->matrix->add(value, xPos, yPos); 
+    cout<<"Added value: ("<<xPos<<","<<yPos<<"): "<<value<<endl;
     
 }
 
@@ -233,7 +234,7 @@ int main() {
 
         if(op == "1") createMatrix();
         else if(op=="2") addValue();
-        else if(op=="2") getValue();
+        else if(op=="3") getValue();
         else if(op == "4") removeValue();
         else if(op == "5") printValues(); 
         else if(op == "6") getDensity();

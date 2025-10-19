@@ -69,8 +69,8 @@ void SparseMatrix :: remove(int xPos, int yPos){
             }
         }
     }
-    std:: cout<<"Node successfully removed."<< std:: endl;
     delete curr; 
+    std:: cout<<"Value successfully removed."<< std:: endl;
 }
 
 int SparseMatrix:: get(int xPos, int yPos){
@@ -168,12 +168,7 @@ SparseMatrix:: ~SparseMatrix(){
         rowAux = rowAux->next;
         delete tempRow;
     }
-    headerNode* colAux = colHead;
-    while(colAux){
-        headerNode* tempCol = colAux;
-        colAux = colAux->next;
-        delete tempCol;
-    }
+    colHead = nullptr; 
 }
 
 void SparseMatrix:: printStoredValues(){
@@ -204,7 +199,8 @@ int SparseMatrix::density(){
     }
     if (maxRow == 0 || maxCol == 0) return 0;
     int total = (maxRow + 1) * (maxCol + 1);
-    return count / total;
+
+    return ((double)count / total)*100;
 }
 
  SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){

@@ -6,6 +6,6 @@ NodeMatrix:: NodeMatrix(SparseMatrix* matrix, int index){
     this->next = nullptr;
 }
 NodeMatrix:: ~NodeMatrix(){
-    matrix->~SparseMatrix();
-    delete this;
+    delete matrix; 
+    matrix = nullptr; 
 }
