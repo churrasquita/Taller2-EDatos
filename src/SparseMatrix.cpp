@@ -9,7 +9,7 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
     if(value<=0) return; 
 
     if(!start){
-        start = new node(value,xPos,yPos); 
+        start = new Node(value,xPos,yPos); 
         return;
     }
     
@@ -39,7 +39,7 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
         curr->data = value;
         return;
     }
-    
+
     Node* newNode = new Node(xPos, yPos, value);
     newNode->right = curr;
 
@@ -56,6 +56,59 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
 
 } 
 
+int SparseMatrix::get(int xPos, int yPos) {
+    if (!start){
+        std::cout << "The Sparse Matrix is empty." << std::endl;
+        return 0;
+    }
+    Node* auxRow = start;
+    while(auxRow  && auxRow->row<xPos){
+        auxRow = auxRow ->down;
+    }
+    if(!auxRow||auxRow->row != xPos) return 0;
+
+    Node* curr = auxRow;
+    while(curr && curr->col<yPos){
+        curr = curr->right;
+    }
+    if (!curr||curr->col!=yPos) return 0;
+    return curr->data;
+}
+
+void SparseMatrix::remove(int xPos, int yPos) {
+    if (!start){
+        std::cout << "The Sparse Matrix is empty." << std::endl;
+        return;
+    }
+
+    Node* prevRow = nullptr;
+    Node* auxRow = start;
+    while (auxRow && auxRow->row < xPos) {
+        prevRow = auxRow;
+        auxRow = auxRow->down;
+    }
+
+    if (!auxRow|| auxRow->row != xPos) return;
+
+    Node* prev = nullptr;
+    Node* curr = auxRow;
+
+    while (curr && curr->col < yPos) {
+        prev = curr;
+        curr = curr->right;
+    }
+
+    if (!curr || curr->col != yPos) return;
+
+    if (prev) prev->right = curr->right;
+    else {
+        if (prevRow) prevRow->down = auxRow->down;
+        else start = auxRow->down;
+    }
+
+    delete curr;
+}
+
 SparseMatrix:: ~SparseMatrix(){
     Node* row = start;
     while (row) {
@@ -70,59 +123,84 @@ SparseMatrix:: ~SparseMatrix(){
 }
 
 void SparseMatrix:: printStoredValues(){
-    headerNode* rowAux = rowHead;
-    while(rowAux){
-        Node* aux = rowAux->head;
-        while(aux){
-            std:: cout<<"("<<aux->row<<","<<aux->col<<"): "<<aux->data<< std:: endl;
-            aux = aux->right;
+    if (!start){
+        std::cout << "The Sparse Matrix is empty." << std::endl;
+        return;
+    }
+
+    Node* auxRow = start;
+    while(auxRow){
+        Node* curr = auxRow;
+        while (curr) {
+            std:: cout << "(" << curr->row << "," << curr->col << "): " << curr->data << std::endl;
+            curr = curr->right;
         }
-        rowAux = rowAux-> next;
+        auxRow = auxRow->down;
     }
 }
 
 int SparseMatrix::density(){
+    if (!start){
+        std::cout << "The Sparse Matrix is empty." << std::endl;
+        return 0;
+    }
+
     int count = 0;
     int maxRow = 0, maxCol = 0;
-    headerNode* aux = rowHead;
-    while(aux){
-        Node* current = aux->head;
-        while(current){
-            count ++;
-            if(current->row>maxRow) maxRow = current->row;
-            if(current->col>maxCol) maxCol = current ->col;
-            current = current->right;
+    
+    Node* auxRow = start;
+    while(auxRow) {
+        Node* curr = auxRow;
+        while(curr){
+            count++;
+            if (curr->row > maxRow) maxRow = curr->row;
+            if (curr->col > maxCol) maxCol = curr->col;
+            curr = curr->right;
         }
-        aux = aux->next;
+        auxRow= auxRow->down;
     }
-    if (maxRow == 0 || maxCol == 0) return 0;
-    int total = (maxRow + 1) * (maxCol + 1);
 
-    return ((double)count / total)*100;
+    int total = (maxRow + 1) * (maxCol + 1);
+    if (total == 0) return 0;
+
+    return ((double)count / total) * 100;
 }
 
  SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){
     SparseMatrix* newMatrix = new SparseMatrix();
 
-    headerNode* rowAux = this->rowHead;
-    while(rowAux){
-        Node* nodeAux = rowAux->head;
-        while (nodeAux) {
-            headerNode* colSecond = second->findCol(nodeAux->row);
-            if(colSecond) {
-                Node* nodeSecond = colSecond->head;
-                while(nodeSecond) {
-                    int xPos = nodeAux->row;
-                    int yPos = nodeSecond->col;
-                    int value = nodeAux->data*nodeSecond->data;
+    if (!start||!second->start){
+        std::cout << "Sparse matrices must have at least one element." << std::endl;
+        return newMatrix;
+    }
+    Node* auxRowFirst = start; 
+    while (auxRowFirst) {
+        Node* aux1 = auxRowFirst; //aux first matrix
+        while (aux1) {
+            Node* auxRowSecond= second->start;
+            while (auxRowSecond && auxRowSecond->row < aux1->col) {
+                auxRowSecond = auxRowSecond->down;
+            }
+
+            if (auxRowSecond&& auxRowSecond->row == aux1->col) {
+                Node* aux2= auxRowSecond; 
+                while(aux2){ //aux second matrix
+                    int xPos = auxRowFirst->row; 
+                    int yPos = aux2->col;  
+                    int product = aux1->data * aux2->data;
+
                     int prev = newMatrix->get(xPos, yPos);
-                    newMatrix->add(prev+value, xPos, yPos);
-                    nodeSecond = nodeSecond->down;
+                    int finalProduct = prev+product; 
+                    newMatrix->add(finalProduct, xPos, yPos);
+
+                    aux2 = aux2->right;
                 }
             }
-            nodeAux = nodeAux->right;
+
+            aux1 = aux1->right;
         }
-        rowAux = rowAux->next;
+
+        auxRowFirst= auxRowFirst->down;
     }
     return newMatrix; 
     
