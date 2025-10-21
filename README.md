@@ -1,7 +1,7 @@
 # Taller2-EDatos
 Implementación, desde cero, de una matriz poco poblada utilizando listas con nexos.
 
-COMPILADOR: g++ -std=c++11 -I../include -o sistema Node.cpp headerNode.cpp SparseMatrix.cpp NodeMatrix.cpp main.cpp
+COMPILADOR: g++ -std=c++11 -I../include -o sistema Node.cpp SparseMatrix.cpp NodeMatrix.cpp main.cpp
 
 EJECUTABLE: .\sistema
 
