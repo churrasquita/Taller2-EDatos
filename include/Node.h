@@ -5,6 +5,6 @@ class Node{
         int data;
         Node* right;
         Node* down;
-        Node(int row, int col, int data);
+        Node(int data, int row, int col);
         ~Node();
 };

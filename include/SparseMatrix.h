@@ -1,15 +1,7 @@
 #pragma once
-#include "headerNode.h"
-
 class SparseMatrix {
-    
     private:
-        headerNode* rowHead;
-        headerNode* colHead;
-        headerNode* createCol(int yPos);
-        headerNode* createRow(int xPos);
-        headerNode* findRow(int xPos);
-        headerNode* findCol(int yPos);
+        Node* start;
         
     public:
         SparseMatrix();
@@ -19,5 +11,6 @@ class SparseMatrix {
         void printStoredValues();
         int density();
         SparseMatrix* multiply(SparseMatrix* second);
+
         ~SparseMatrix();
 };
