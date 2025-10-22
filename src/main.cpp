@@ -1,5 +1,9 @@
 #include "NodeMatrix.h"
+
 #include <iostream>
+#include <ctime>
+#include <random>
+
 using namespace std;
 
 NodeMatrix* head = nullptr;
@@ -114,6 +118,7 @@ void multiplyMx(){
         return;
     }
     cout<<"Let's multiply two sparse matrices of the system!"<<endl;
+    cout<<"REMEMBER! Order matters AxB != BxA"<<endl;
     cout<<"First, choose two matrices: "<<endl;
 
     cout << "Enter index of first matrix: ";

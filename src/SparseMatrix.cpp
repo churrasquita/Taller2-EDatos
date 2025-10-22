@@ -46,13 +46,14 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
     if (prev){
         prev->right = newNode;
     }else{ 
-        if (prevRow && prevRow->down == currRow)
+        if (prevRow){
             prevRow->down = newNode;
-        else
+        } else{
             start = newNode;
+        }
         newNode->down = currRow->down;
+        currRow->down = nullptr; 
     }
-
 
 } 
 
@@ -100,10 +101,18 @@ void SparseMatrix::remove(int xPos, int yPos) {
 
     if (!curr || curr->col != yPos) return;
 
-    if (prev) prev->right = curr->right;
-    else {
-        if (prevRow) prevRow->down = auxRow->down;
-        else start = auxRow->down;
+    if (prev){
+        prev->right = curr->right;
+    }else{
+        Node* auxNext = curr->right; 
+        if(auxNext){
+            auxNext -> down = curr->down;
+            if (prevRow) prevRow->down = auxRow->down;
+            else start = auxNext; 
+        }else{
+            if (prevRow) prevRow->down = curr->down;
+            else start = curr->down;
+        }
     }
 
     delete curr;
@@ -166,7 +175,7 @@ int SparseMatrix::density(){
     return ((double)count / total) * 100;
 }
 
- SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){
+SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){
     SparseMatrix* newMatrix = new SparseMatrix();
 
     if (!start||!second->start){
