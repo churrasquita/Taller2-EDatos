@@ -151,24 +151,25 @@ int SparseMatrix::density(){
     }
 
     int count = 0;
-    int maxRow = 0, maxCol = 0;
+    int maxRow = 0;
+    int maxCol = 0;
     
     Node* auxRow = start;
     while(auxRow) {
         Node* curr = auxRow;
         while(curr){
             count++;
-            if (curr->row > maxRow) maxRow = curr->row;
-            if (curr->col > maxCol) maxCol = curr->col;
+            if(curr->row>maxRow) maxRow=curr->row;
+            if(curr->col>maxCol) maxCol=curr->col;
             curr = curr->right;
         }
         auxRow= auxRow->down;
     }
 
-    int total = (maxRow + 1) * (maxCol + 1);
-    if (total == 0) return 0;
+    long total = (long)(maxRow + 1) * (long)(maxCol + 1);
+    if(total<= 0)return 0;
 
-    return (int)(((double)count * 100.0) / total);
+    return (count * 100) / total;
 }
 
 SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){

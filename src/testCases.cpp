@@ -67,13 +67,6 @@ void runTestCases(){
         double timeMult = 1000.0*double(end-start)/CLOCKS_PER_SEC;
         std::cout<<"Time multiply algorithm: "<<timeMult<<" ms"<<std::endl;
 
-        // density
-        start = clock();
-        int density = spMatrix1->density();
-        end = clock();
-        double timeDens = 1000.0*double(end-start)/CLOCKS_PER_SEC;
-        std::cout<< "Time density algorithm: " <<timeDens<<" ms " << "(real density of mx: "<<density<<"%)"<<std::endl;
-
         delete spMatrix1;
         delete spMatrix2;
         delete resultM;
