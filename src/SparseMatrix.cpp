@@ -6,7 +6,7 @@ SparseMatrix:: SparseMatrix(){
 }
 
 void SparseMatrix:: add(int value, int xPos, int yPos){
-    if(value<=0) return; 
+    if(value==0) return; 
 
     if(!start){
         start = new Node(value,xPos,yPos); 
@@ -15,13 +15,13 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
     
     Node* prevRow = nullptr;
     Node* currRow = start;
-    while (currRow && currRow->row < xPos) {
+    while (currRow && currRow->row<xPos) {
         prevRow = currRow;
         currRow = currRow->down;
     }
 
     if (!currRow || currRow->row > xPos) {
-        Node* newRow = new Node(xPos, yPos, value);
+        Node* newRow = new Node(value,xPos,yPos);
         newRow->down = currRow;
         if (prevRow) prevRow->down = newRow;
         else start = newRow;
@@ -40,7 +40,7 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
         return;
     }
 
-    Node* newNode = new Node(xPos, yPos, value);
+    Node* newNode = new Node(value, xPos,yPos);
     newNode->right = curr;
 
     if (prev){
@@ -58,10 +58,7 @@ void SparseMatrix:: add(int value, int xPos, int yPos){
 } 
 
 int SparseMatrix::get(int xPos, int yPos) {
-    if (!start){
-        std::cout << "The Sparse Matrix is empty." << std::endl;
-        return 0;
-    }
+    if (!start) return 0;
     Node* auxRow = start;
     while(auxRow  && auxRow->row<xPos){
         auxRow = auxRow ->down;
@@ -81,7 +78,6 @@ void SparseMatrix::remove(int xPos, int yPos) {
         std::cout << "The Sparse Matrix is empty." << std::endl;
         return;
     }
-
     Node* prevRow = nullptr;
     Node* auxRow = start;
     while (auxRow && auxRow->row < xPos) {
@@ -172,13 +168,13 @@ int SparseMatrix::density(){
     int total = (maxRow + 1) * (maxCol + 1);
     if (total == 0) return 0;
 
-    return ((double)count / total) * 100;
+    return (int)(((double)count * 100.0) / total);
 }
 
 SparseMatrix* SparseMatrix:: multiply(SparseMatrix* second){
     SparseMatrix* newMatrix = new SparseMatrix();
 
-    if (!start||!second->start){
+    if (!this->start||!second->start){
         std::cout << "Sparse matrices must have at least one element." << std::endl;
         return newMatrix;
     }

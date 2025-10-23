@@ -1,5 +1,5 @@
 #include "NodeMatrix.h"
-
+#include "testCases.h"
 #include <iostream>
 #include <ctime>
 #include <random>
@@ -18,6 +18,7 @@ void addValue(){
     cout<<"Let's add values to Sparse Matrix!"<<endl;
     cout<<"(You're working with the matrix #"<<currentMx->index<<")"<<endl;
     cout<<"- Value (integer > 0): "<<endl;
+    cout<<"> ";
     int value; cin>>value;
     while(value<=0){
         cout<<"Invalid value! Try again: "<<endl;
@@ -216,12 +217,13 @@ void printValues(){
     cout<<"(You're working with the matrix #"<<currentMx->index<<")"<<endl;
     currentMx->matrix->printStoredValues();
 }
+
 int main() {
     cout<<"Welcome!!"<<endl;
     cout<<"We're gonna try the Sparse Matrix program!"<<endl;
     string op = " "; 
 
-    while(op!="9"){
+    while(op!="10"){
         cout<<endl; 
         cout<<"Numbers of matrices in the system: "<< mxCount<<endl;
         cout<<"---- MENU ----"<<endl;
@@ -233,7 +235,8 @@ int main() {
         cout<<"6) Get current Sparse Matrix density "<<endl;
         cout<<"7) Multiply with another Sparse Matrix "<<endl;
         cout<<"8) Change current matrix"<<endl;
-        cout<<"9) Exit "<<endl;
+        cout<<"9) Try test cases"<<endl;
+        cout<<"10) Exit "<<endl;
         cout<<">> ";
         cin>>op; 
 
@@ -245,7 +248,8 @@ int main() {
         else if(op == "6") getDensity();
         else if(op == "7") multiplyMx();
         else if(op == "8") selectMx();
-        else if(op == "9"){
+        else if(op == "9") runTestCases();
+        else if(op == "10"){
             cout<<"See u later!"<<endl;
         }else{
             cout<<"Invalid option, pls try again :("<<endl;
