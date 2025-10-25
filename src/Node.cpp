@@ -1,6 +1,6 @@
 #include "Node.h"
 
-Node:: Node(int data, int row, int col){
+Node:: Node(int data, int col, int row){
     this-> row = row;
     this-> col = col;
     this-> data = data;

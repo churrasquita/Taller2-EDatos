@@ -140,15 +140,19 @@ void multiplyMx(){
         return;
     }
     SparseMatrix* newMatrix = aux1->matrix->multiply(aux2->matrix);
-    mxCount++;
-    NodeMatrix* newNode = new NodeMatrix(newMatrix, mxCount);
-
-    NodeMatrix* aux = head;
-    while (aux->next != nullptr)
-        aux = aux->next;
-    aux->next = newNode;
-    cout<<"Sparse Matrix resulting from multiplication"<<endl;
-    newMatrix->printStoredValues();
+    if(newMatrix){
+        mxCount++;
+        NodeMatrix* newNode = new NodeMatrix(newMatrix, mxCount);
+        NodeMatrix* aux = head;
+        while(aux->next!=nullptr){
+            aux = aux->next;
+        }
+        aux->next = newNode;
+        cout<<"Sparse Matrix resulting from multiplication"<<endl;
+        newMatrix->printStoredValues();
+    }else{
+        cout<<"Failed multiplication."<<endl;
+    }
 }
 
 void getDensity(){
