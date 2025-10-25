@@ -2,11 +2,12 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <iomanip>
 
 void runTestCases(){
     int elements[] = {50, 50, 250, 250, 500, 500, 1000, 1000, 5000, 5000};
     srand(time(0)); 
-
+    std::cout << std::fixed << std::setprecision(6);
     for(int i = 0; i<10; i++) {
         std::cout<<std::endl;
         std::cout<<"Test #" << i+1 <<std::endl; 
